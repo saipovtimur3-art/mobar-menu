@@ -230,13 +230,44 @@
     white-space:nowrap;
     transition:color .15s ease, background-color .15s ease;
   }
+  nav a{ transform:scale(1); }
   nav a:hover{ color:var(--ink); }
-  nav a.active{ color:var(--gold-ink); background:var(--gold); font-weight:700; }
+  nav a.active{ color:var(--gold-ink); background:var(--gold); font-weight:700; transform:scale(1.06); }
   nav a:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
 
+  .hero-photo{ transition:transform .35s ease; }
+  .item-featured:hover .hero-photo{ transform:scale(1.02); }
+  .item-featured:active .hero-photo{ transform:scale(0.99); }
+
   @media (prefers-reduced-motion: no-preference){
-    section{ animation:rise .4s ease both; }
-    @keyframes rise{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+    nav a{ transition:color .15s ease, background-color .15s ease, transform .2s cubic-bezier(.34,1.56,.64,1); }
+
+    .logo-chip{ animation:stamp .6s cubic-bezier(.2,1.4,.4,1) both; }
+    @keyframes stamp{
+      0%{ opacity:0; transform:rotate(-1.5deg) scale(0.7); }
+      60%{ opacity:1; transform:rotate(-2.5deg) scale(1.05); }
+      100%{ opacity:1; transform:rotate(-1.5deg) scale(1); }
+    }
+    .kicker{ animation:fade-in .5s ease both; }
+    .tagline{ animation:fade-in .5s ease .3s both; }
+    .sub{ animation:fade-in .5s ease .4s both; }
+    @keyframes fade-in{ from{opacity:0;} to{opacity:1;} }
+
+    .splash{ animation:drift 7s ease-in-out infinite; transform-origin:center; }
+    .splash:nth-of-type(2){ animation-duration:9s; animation-direction:reverse; }
+    @keyframes drift{
+      0%,100%{ transform:translate(0,0) rotate(0deg) scale(1); }
+      50%{ transform:translate(3px,-5px) rotate(3deg) scale(1.04); }
+    }
+
+    section{ opacity:0; transform:translateY(14px); }
+    section.in-view{
+      animation:rise .5s ease both;
+    }
+    @keyframes rise{ to{opacity:1; transform:none;} }
+
+    .item{ transition:background-color .2s ease; }
+    .item:hover{ background-color:rgba(252,191,10,0.05); }
   }
 </style>
 
@@ -516,4 +547,11 @@
       if (active) active.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
     }, 400);
   }));
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+    sections.forEach(s => s && io.observe(s));
+  }
 </script>
