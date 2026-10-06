@@ -12,6 +12,7 @@
     --paper:#0A0A0A;
     --paper-2:#151312;
     --card:#161412;
+    --card-2:#1c1915;
     --line: rgba(255,255,255,0.14);
     --line-strong: rgba(255,255,255,0.26);
     --gold:#FCBF0A;
@@ -35,7 +36,7 @@
     margin:0 auto;
     min-height:100vh;
     background:var(--paper);
-    padding-bottom:104px;
+    padding-bottom:24px;
     position:relative;
   }
 
@@ -52,7 +53,7 @@
 
   header{
     position:relative;
-    padding:40px 24px 28px;
+    padding:32px 24px 24px;
     text-align:center;
     overflow:hidden;
   }
@@ -109,15 +110,59 @@
     letter-spacing:0.02em;
   }
 
+  /* ---- sticky filter tabs ---- */
+  .tabs-wrap{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(10,10,10,0.94);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .tabs{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:12px 16px;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+    color:var(--dim);
+    text-decoration:none;
+    padding:9px 14px;
+    border-radius:20px;
+    border:1.5px solid var(--line);
+    white-space:nowrap;
+    background:transparent;
+    cursor:pointer;
+    transition:color .15s ease, background-color .15s ease, border-color .15s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+  }
+  .tab svg{ width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; }
+  .tab:hover{ color:var(--ink); border-color:var(--line-strong); }
+  .tab.active{ color:var(--gold-ink); background:var(--gold); border-color:var(--gold); font-weight:700; transform:scale(1.04); }
+  .tab:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
   section{
-    padding:36px 24px 6px;
+    padding:24px 24px 6px;
     scroll-margin-top:20px;
   }
+  section[hidden]{ display:none; }
+
   .sec-head{
     display:flex;
     align-items:center;
-    gap:10px;
-    margin:0 0 6px;
+    gap:12px;
+    margin:0 0 16px;
     padding-bottom:12px;
     border-bottom:3px solid var(--gold);
   }
@@ -130,60 +175,110 @@
     letter-spacing:0.01em;
     color:var(--ink);
   }
-
-  .hero-photo{
-    width:100%;
-    aspect-ratio:4/3;
-    object-fit:cover;
-    border-radius:10px;
-    margin:16px 0 4px;
-    display:block;
-    border:1px solid var(--line);
+  .sec-icon{
+    width:22px; height:22px;
+    flex:0 0 auto;
+    fill:none;
+    stroke:var(--gold);
+    stroke-width:1.7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .sec-count{
+    margin-left:auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--dim-2);
+    font-weight:500;
   }
 
   .sub-label{
+    grid-column:1 / -1;
     font-family:'IBM Plex Mono', monospace;
     font-size:11px;
     letter-spacing:0.16em;
     text-transform:uppercase;
     color:var(--gold);
-    margin:22px 0 2px;
+    margin:18px 0 0;
     font-weight:600;
   }
-  .sub-label:first-of-type{ margin-top:16px; }
+  .sub-label:first-child{ margin-top:0; }
 
-  .item{
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .card{
     display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:14px;
-    padding:13px 0;
-    border-bottom:1px solid var(--line);
+    flex-direction:column;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    transition:transform .2s ease, border-color .2s ease;
   }
-  .item:last-child{ border-bottom:none; }
-  .item-name{
-    font-size:15px;
+  .card-media{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+    overflow:hidden;
+    background:var(--card);
+  }
+  .card-media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .35s ease;
+  }
+  .card-media.placeholder{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(circle at 32% 28%, rgba(252,191,10,0.13), transparent 60%),
+      linear-gradient(160deg, var(--card-2) 0%, #121011 100%);
+  }
+  .card-media.placeholder svg{
+    width:38%; height:38%;
+    fill:none;
+    stroke:var(--gold);
+    stroke-width:1.4;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    opacity:0.4;
+  }
+  .card-body{
+    padding:10px 11px 12px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex:1;
+  }
+  .card-name{
+    font-size:13px;
     font-weight:600;
-    line-height:1.35;
+    line-height:1.32;
     color:var(--ink);
+    margin:0;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
   }
-  .item-price{
+  .card-price{
+    margin:auto 0 0;
     font-family:'IBM Plex Mono', monospace;
     font-variant-numeric:tabular-nums;
     font-weight:600;
-    font-size:14.5px;
-    white-space:nowrap;
+    font-size:13.5px;
     color:var(--gold);
   }
 
-  .item-featured{
-    padding:14px 0 18px;
-    border-bottom:1px solid var(--line);
-  }
-  .item-featured .item{ border-bottom:none; padding:12px 0 0; }
-
   footer{
-    margin-top:44px;
+    margin-top:36px;
     padding:26px 24px 24px;
     text-align:center;
   }
@@ -201,52 +296,7 @@
     line-height:1.7;
   }
 
-  nav{
-    position:fixed;
-    left:50%;
-    bottom:14px;
-    transform:translateX(-50%);
-    width:calc(100% - 24px);
-    max-width:536px;
-    z-index:10;
-    display:flex;
-    gap:8px;
-    overflow-x:auto;
-    padding:10px 12px;
-    background:rgba(10,10,10,0.92);
-    backdrop-filter:blur(14px);
-    border:2px solid var(--gold);
-    border-radius:14px;
-    box-shadow:0 20px 40px -16px rgba(0,0,0,0.8);
-    scrollbar-width:none;
-  }
-  nav::-webkit-scrollbar{display:none;}
-  nav a{
-    flex:0 0 auto;
-    font-family:'Oswald', sans-serif;
-    font-weight:600;
-    font-size:12.5px;
-    letter-spacing:0.02em;
-    text-transform:uppercase;
-    color:var(--dim);
-    text-decoration:none;
-    padding:8px 14px;
-    border-radius:8px;
-    white-space:nowrap;
-    transition:color .15s ease, background-color .15s ease;
-  }
-  nav a{ transform:scale(1); }
-  nav a:hover{ color:var(--ink); }
-  nav a.active{ color:var(--gold-ink); background:var(--gold); font-weight:700; transform:scale(1.06); }
-  nav a:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
-
-  .hero-photo{ transition:transform .35s ease; }
-  .item-featured:hover .hero-photo{ transform:scale(1.02); }
-  .item-featured:active .hero-photo{ transform:scale(0.99); }
-
   @media (prefers-reduced-motion: no-preference){
-    nav a{ transition:color .15s ease, background-color .15s ease, transform .2s cubic-bezier(.34,1.56,.64,1); }
-
     .logo-chip{ animation:stamp .6s cubic-bezier(.2,1.4,.4,1) both; }
     @keyframes stamp{
       0%{ opacity:0; transform:rotate(-1.5deg) scale(0.7); }
@@ -265,54 +315,16 @@
       50%{ transform:translate(3px,-5px) rotate(3deg) scale(1.04); }
     }
 
-    section{ opacity:0; transform:translateY(14px); }
-    section.in-view{
-      animation:rise .5s ease both;
-    }
-    @keyframes rise{ to{opacity:1; transform:none;} }
+    section{ animation:rise .35s ease both; }
+    @keyframes rise{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
 
-    .item{ transition:background-color .2s ease; }
-    .item:hover{ background-color:rgba(252,191,10,0.05); }
-  }
-
-  .sec-head{ gap:12px; }
-  .sec-icon{
-    width:22px; height:22px;
-    flex:0 0 auto;
-    fill:none;
-    stroke:var(--gold);
-    stroke-width:1.7;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-  }
-
-  .item.zebra{
-    background:rgba(255,255,255,0.028);
-    margin:0 -24px;
-    padding:13px 24px;
-  }
-
-  .divider{
-    display:flex;
-    align-items:center;
-    margin:30px 24px 0;
-  }
-  .divider::before, .divider::after{
-    content:'';
-    flex:1;
-    height:2px;
-    background-image:repeating-linear-gradient(90deg, var(--gold) 0 9px, transparent 9px 18px);
-  }
-  .divider-icon{
-    width:19px; height:19px;
-    margin:0 16px;
-    flex:0 0 auto;
-    fill:var(--gold);
+    .card{ animation:rise .3s ease both; }
+    .card:active{ transform:scale(0.97); }
+    .card-media:hover img{ transform:scale(1.04); }
   }
 </style>
 </head>
 <body>
-
 <div class="flag-strip"></div>
 
 <div class="wrap">
@@ -337,224 +349,239 @@
     <p class="sub">ПОЛНЫЙ АССОРТИМЕНТ БАРА И КУХНИ</p>
   </header>
 
-  <section id="cocktails">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M4 4h16l-8 9z"/><path d="M12 13v6"/><path d="M8 19h8"/></svg><h2>Коктейли</h2></div>
-    <div class="item"><p class="item-name">Апероль Спритц</p><p class="item-price">1 190 ₽</p></div>
-    <div class="item"><p class="item-name">Сарти Спритц 0,4</p><p class="item-price">990 ₽</p></div>
+  <div class="tabs-wrap">
+    <nav class="tabs" id="tabs">
+      <button class="tab" data-target="cocktails"><svg viewBox="0 0 24 24"><path d="M4 4h16l-8 9z"/><path d="M12 13v6"/><path d="M8 19h8"/></svg>Коктейли</button>
+      <button class="tab" data-target="spirits"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg>Крепкое</button>
+      <button class="tab" data-target="wine"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg>Вино</button>
+      <button class="tab" data-target="beer"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg>Пиво</button>
+      <button class="tab" data-target="coffee"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg>Кофе</button>
+      <button class="tab" data-target="juice"><svg viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg>Соки</button>
+      <button class="tab" data-target="water"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg>Вода</button>
+      <button class="tab" data-target="breakfast"><svg viewBox="0 0 24 24"><circle cx="12" cy="14" r="5"/><path d="M3 14h2M19 14h2M12 3v2M5.6 7.6l1.4 1.4M18.4 7.6l-1.4 1.4"/></svg>Завтраки</button>
+      <button class="tab" data-target="grill"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg>Гриль</button>
+      <button class="tab" data-target="bowls"><svg viewBox="0 0 24 24"><path d="M3 12h18a9 9 0 0 1-9 9h0a9 9 0 0 1-9-9z"/><path d="M16 3l3 9M19 3l2 9"/></svg>Роллы</button>
+      <button class="tab" data-target="soups"><svg viewBox="0 0 24 24"><path d="M3 11h18c0 4-3 8-7 8h-4c-4 0-7-4-7-8z"/><path d="M9 3c0 1-1.2 1-1.2 2S9 6 9 7M13 3c0 1-1.2 1-1.2 2S13 6 13 7"/></svg>Супы</button>
+      <button class="tab" data-target="desserts"><svg viewBox="0 0 24 24"><path d="M7 11h10l-1.3 8.1a2 2 0 0 1-2 1.9h-3.4a2 2 0 0 1-2-1.9L7 11z"/><path d="M5.5 11a6.5 4 0 0 1 13 0z"/><path d="M12 3.2v2.3"/><circle cx="12" cy="2.3" r="1" fill="var(--gold)" stroke="none"/></svg>Десерты</button>
+    </nav>
+  </div>
+
+  <section id="cocktails" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M4 4h16l-8 9z"/><path d="M12 13v6"/><path d="M8 19h8"/></svg><h2>Коктейли</h2><span class="sec-count">2</span></div>
+    <div class="grid">
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 4h16l-8 9z"/><path d="M12 13v6"/><path d="M8 19h8"/></svg></div><div class="card-body"><p class="card-name">Апероль Спритц</p><p class="card-price">1 190 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 4h16l-8 9z"/><path d="M12 13v6"/><path d="M8 19h8"/></svg></div><div class="card-body"><p class="card-name">Сарти Спритц 0,4</p><p class="card-price">990 ₽</p></div></div>
+    </div>
   </section>
 
-  <section id="spirits">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg><h2>Крепкий алкоголь</h2></div>
-
-    <p class="sub-label">Виски</p>
-    <div class="item"><p class="item-name">Jack Daniel's 0,05</p><p class="item-price">1 390 ₽</p></div>
-    <div class="item"><p class="item-name">Jameson 0,05</p><p class="item-price">1 690 ₽</p></div>
-    <div class="item"><p class="item-name">Chivas Regal 12 лет 0,05</p><p class="item-price">2 950 ₽</p></div>
-
-    <p class="sub-label">Коньяк</p>
-    <div class="item"><p class="item-name">Моне 0,05</p><p class="item-price">1 190 ₽</p></div>
-    <div class="item"><p class="item-name">Арарат 10 лет 0,05</p><p class="item-price">1 690 ₽</p></div>
-    <div class="item"><p class="item-name">Арарат 7 лет 0,05</p><p class="item-price">1 450 ₽</p></div>
-    <div class="item"><p class="item-name">Арарат 5 лет 0,05</p><p class="item-price">1 290 ₽</p></div>
-    <div class="item"><p class="item-name">Арарат 5 лет 0,200</p><p class="item-price">3 250 ₽</p></div>
-    <div class="item"><p class="item-name">Арарат 7 лет 0,200</p><p class="item-price">3 450 ₽</p></div>
-
-    <p class="sub-label">Джин</p>
-    <div class="item"><p class="item-name">Gin Mare 0,05</p><p class="item-price">1 390 ₽</p></div>
-
-    <p class="sub-label">Водка</p>
-    <div class="item"><p class="item-name">Beluga 0,05</p><p class="item-price">990 ₽</p></div>
-    <div class="item"><p class="item-name">Beluga Hunting 0,05</p><p class="item-price">990 ₽</p></div>
-    <div class="item"><p class="item-name">Mamont Vodka 0,375</p><p class="item-price">2 990 ₽</p></div>
-    <div class="item"><p class="item-name">Онегин 0,05</p><p class="item-price">1 490 ₽</p></div>
-    <div class="item"><p class="item-name">Царская Золотая 0,05</p><p class="item-price">990 ₽</p></div>
-    <div class="item"><p class="item-name">Царская Оригинальная 0,05</p><p class="item-price">990 ₽</p></div>
-
-    <p class="sub-label">Чача</p>
-    <div class="item"><p class="item-name">Чача Золотая 0,1</p><p class="item-price">1 190 ₽</p></div>
-    <div class="item"><p class="item-name">Чача Мускатная 0,1</p><p class="item-price">1 190 ₽</p></div>
-    <div class="item"><p class="item-name">Чача Особая 0,1</p><p class="item-price">1 190 ₽</p></div>
-
-    <p class="sub-label">Настойки и ликёры</p>
-    <div class="item"><p class="item-name">Ягермайстер 0,1</p><p class="item-price">1 090 ₽</p></div>
-    <div class="item"><p class="item-name">Ляйбвехтер 0,1</p><p class="item-price">1 190 ₽</p></div>
-
-    <p class="sub-label">Вермут</p>
-    <div class="item"><p class="item-name">Martini Rosato 0,250</p><p class="item-price">1 890 ₽</p></div>
-    <div class="item"><p class="item-name">Martini Secco 0,250</p><p class="item-price">1 890 ₽</p></div>
-    <div class="item"><p class="item-name">Martini Semi Dolce 0,250</p><p class="item-price">1 890 ₽</p></div>
+  <section id="spirits" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg><h2>Крепкий алкоголь</h2><span class="sec-count">24</span></div>
+    <div class="grid">
+      <p class="sub-label">Виски</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Jack Daniel&#x27;s 0,05</p><p class="card-price">1 390 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Jameson 0,05</p><p class="card-price">1 690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Chivas Regal 12 лет 0,05</p><p class="card-price">2 950 ₽</p></div></div>
+      <p class="sub-label">Коньяк</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Моне 0,05</p><p class="card-price">1 190 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Арарат 10 лет 0,05</p><p class="card-price">1 690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Арарат 7 лет 0,05</p><p class="card-price">1 450 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Арарат 5 лет 0,05</p><p class="card-price">1 290 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Арарат 5 лет 0,200</p><p class="card-price">3 250 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Арарат 7 лет 0,200</p><p class="card-price">3 450 ₽</p></div></div>
+      <p class="sub-label">Джин</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Gin Mare 0,05</p><p class="card-price">1 390 ₽</p></div></div>
+      <p class="sub-label">Водка</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Beluga 0,05</p><p class="card-price">990 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Beluga Hunting 0,05</p><p class="card-price">990 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Mamont Vodka 0,375</p><p class="card-price">2 990 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Онегин 0,05</p><p class="card-price">1 490 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Царская Золотая 0,05</p><p class="card-price">990 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Царская Оригинальная 0,05</p><p class="card-price">990 ₽</p></div></div>
+      <p class="sub-label">Чача</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Чача Золотая 0,1</p><p class="card-price">1 190 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Чача Мускатная 0,1</p><p class="card-price">1 190 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Чача Особая 0,1</p><p class="card-price">1 190 ₽</p></div></div>
+      <p class="sub-label">Настойки и ликёры</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Ягермайстер 0,1</p><p class="card-price">1 090 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Ляйбвехтер 0,1</p><p class="card-price">1 190 ₽</p></div></div>
+      <p class="sub-label">Вермут</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Martini Rosato 0,250</p><p class="card-price">1 890 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Martini Secco 0,250</p><p class="card-price">1 890 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M10 2h4"/><path d="M10 2v3.5c0 .6-.3 1.1-.8 1.6C8.4 8 8 9.2 8 10.5V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-9.5c0-1.3-.4-2.5-1.2-3.4-.5-.5-.8-1-.8-1.6V2"/><path d="M8 13h8"/></svg></div><div class="card-body"><p class="card-name">Martini Semi Dolce 0,250</p><p class="card-price">1 890 ₽</p></div></div>
+    </div>
   </section>
 
-  <section id="wine">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg><h2>Игристое и вино</h2></div>
-
-    <p class="sub-label">Игристое</p>
-    <div class="item"><p class="item-name">Bottega Gold 0,2</p><p class="item-price">2 590 ₽</p></div>
-    <div class="item"><p class="item-name">Bottega Rose Gold 0,2</p><p class="item-price">2 590 ₽</p></div>
-    <div class="item"><p class="item-name">Moët &amp; Chandon 0,375</p><p class="item-price">18 500 ₽</p></div>
-    <div class="item"><p class="item-name">Prosecco Gaetano 0,2</p><p class="item-price">2 250 ₽</p></div>
-    <div class="item"><p class="item-name">Bruni Prosecco 0,187</p><p class="item-price">2 450 ₽</p></div>
-    <div class="item"><p class="item-name">Bruni Prosecco 0,750 (бутылка)</p><p class="item-price">4 800 ₽</p></div>
-    <div class="item"><p class="item-name">Nuvole Brut белое 0,75 (бутылка)</p><p class="item-price">3 200 ₽</p></div>
-    <div class="item"><p class="item-name">Франсуа Монтан Блан де Блан 0,2</p><p class="item-price">2 450 ₽</p></div>
-
-    <p class="sub-label">Белое</p>
-    <div class="item"><p class="item-name">Brillo Del Dia Sauvignon 0,187</p><p class="item-price">1 390 ₽</p></div>
-    <div class="item"><p class="item-name">Playlist White Zinfandel 0,187</p><p class="item-price">1 850 ₽</p></div>
-    <div class="item"><p class="item-name">Villa Pieri Pinot Grigio 0,187</p><p class="item-price">1 850 ₽</p></div>
-    <div class="item"><p class="item-name">Villa Pieri Pinot Grigio 0,750 (бутылка)</p><p class="item-price">4 350 ₽</p></div>
-    <div class="item"><p class="item-name">Sancerre Sauvignon Blanc, сух., 0,375 (бутылка)</p><p class="item-price">10 990 ₽</p></div>
-
-    <p class="sub-label">Красное</p>
-    <div class="item"><p class="item-name">Brillo Del Dia Tempranillo 0,187</p><p class="item-price">1 390 ₽</p></div>
-    <div class="item"><p class="item-name">Merlot Cielo 0,187</p><p class="item-price">1 850 ₽</p></div>
-    <div class="item"><p class="item-name">Nuvole Rosso 0,187</p><p class="item-price">1 390 ₽</p></div>
-    <div class="item"><p class="item-name">Playlist Shiraz 0,187</p><p class="item-price">1 390 ₽</p></div>
-    <div class="item"><p class="item-name">Примитиво, п/сух., бутылка 0,187</p><p class="item-price">1 850 ₽</p></div>
-    <div class="item"><p class="item-name">Мерло Рабозо, п/сух., 0,750 (бутылка)</p><p class="item-price">4 800 ₽</p></div>
+  <section id="wine" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg><h2>Игристое и вино</h2><span class="sec-count">19</span></div>
+    <div class="grid">
+      <p class="sub-label">Игристое</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Bottega Gold 0,2</p><p class="card-price">2 590 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Bottega Rose Gold 0,2</p><p class="card-price">2 590 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Moët &amp; Chandon 0,375</p><p class="card-price">18 500 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Prosecco Gaetano 0,2</p><p class="card-price">2 250 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Bruni Prosecco 0,187</p><p class="card-price">2 450 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Bruni Prosecco 0,750 (бутылка)</p><p class="card-price">4 800 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Nuvole Brut белое 0,75 (бутылка)</p><p class="card-price">3 200 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Франсуа Монтан Блан де Блан 0,2</p><p class="card-price">2 450 ₽</p></div></div>
+      <p class="sub-label">Белое</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Brillo Del Dia Sauvignon 0,187</p><p class="card-price">1 390 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Playlist White Zinfandel 0,187</p><p class="card-price">1 850 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Villa Pieri Pinot Grigio 0,187</p><p class="card-price">1 850 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Villa Pieri Pinot Grigio 0,750 (бутылка)</p><p class="card-price">4 350 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Sancerre Sauvignon Blanc, сух., 0,375 (бутылка)</p><p class="card-price">10 990 ₽</p></div></div>
+      <p class="sub-label">Красное</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Brillo Del Dia Tempranillo 0,187</p><p class="card-price">1 390 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Merlot Cielo 0,187</p><p class="card-price">1 850 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Nuvole Rosso 0,187</p><p class="card-price">1 390 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Playlist Shiraz 0,187</p><p class="card-price">1 390 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Примитиво, п/сух., бутылка 0,187</p><p class="card-price">1 850 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 3h10"/><path d="M7 3c0 4.5 2 7.5 5 7.5s5-3 5-7.5"/><path d="M12 10.5V18"/><path d="M8.5 21h7"/><path d="M12 18v3"/></svg></div><div class="card-body"><p class="card-name">Мерло Рабозо, п/сух., 0,750 (бутылка)</p><p class="card-price">4 800 ₽</p></div></div>
+    </div>
   </section>
 
-  <section id="beer">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg><h2>Пиво и сидр</h2></div>
-
-    <p class="sub-label">Разливное</p>
-    <div class="item"><p class="item-name">Hoegaarden 0,4</p><p class="item-price">950 ₽</p></div>
-    <div class="item"><p class="item-name">Hoegaarden 0,6</p><p class="item-price">1 300 ₽</p></div>
-    <div class="item"><p class="item-name">Spaten 0,4</p><p class="item-price">950 ₽</p></div>
-    <div class="item"><p class="item-name">Spaten 0,6</p><p class="item-price">1 300 ₽</p></div>
-
-    <p class="sub-label">Бутылочное</p>
-    <div class="item"><p class="item-name">Corona Extra 0,33</p><p class="item-price">790 ₽</p></div>
-    <div class="item"><p class="item-name">Guinness 0,44</p><p class="item-price">1 490 ₽</p></div>
-    <div class="item"><p class="item-name">Hoegaarden 0,44</p><p class="item-price">990 ₽</p></div>
-    <div class="item"><p class="item-name">Red Finch 0,45</p><p class="item-price">890 ₽</p></div>
-    <div class="item"><p class="item-name">Spaten 0,45</p><p class="item-price">990 ₽</p></div>
-    <div class="item"><p class="item-name">Stella Artois 0,44</p><p class="item-price">890 ₽</p></div>
-    <div class="item"><p class="item-name">Сидр Bon Season 0,4</p><p class="item-price">890 ₽</p></div>
+  <section id="beer" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg><h2>Пиво и сидр</h2><span class="sec-count">11</span></div>
+    <div class="grid">
+      <p class="sub-label">Разливное</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Hoegaarden 0,4</p><p class="card-price">950 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Hoegaarden 0,6</p><p class="card-price">1 300 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Spaten 0,4</p><p class="card-price">950 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Spaten 0,6</p><p class="card-price">1 300 ₽</p></div></div>
+      <p class="sub-label">Бутылочное</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Corona Extra 0,33</p><p class="card-price">790 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Guinness 0,44</p><p class="card-price">1 490 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Hoegaarden 0,44</p><p class="card-price">990 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Red Finch 0,45</p><p class="card-price">890 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Spaten 0,45</p><p class="card-price">990 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Stella Artois 0,44</p><p class="card-price">890 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M5 7h10v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7z"/><path d="M15 9h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2"/><path d="M5 7V5h10v2"/></svg></div><div class="card-body"><p class="card-name">Сидр Bon Season 0,4</p><p class="card-price">890 ₽</p></div></div>
+    </div>
   </section>
 
-  <section id="coffee">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg><h2>Кофе и чай</h2></div>
-    <div class="item"><p class="item-name">Американо 0,3</p><p class="item-price">420 ₽</p></div>
-    <div class="item"><p class="item-name">Американо 0,4</p><p class="item-price">450 ₽</p></div>
-    <div class="item"><p class="item-name">Капучино 0,3</p><p class="item-price">420 ₽</p></div>
-    <div class="item"><p class="item-name">Капучино 0,4</p><p class="item-price">450 ₽</p></div>
-    <div class="item"><p class="item-name">Латте 0,3</p><p class="item-price">550 ₽</p></div>
-    <div class="item"><p class="item-name">Латте 0,4</p><p class="item-price">620 ₽</p></div>
-    <div class="item"><p class="item-name">Эспрессо</p><p class="item-price">390 ₽</p></div>
-    <div class="item"><p class="item-name">Чай в ассортименте 0,4</p><p class="item-price">400 ₽</p></div>
-    <div class="item"><p class="item-name">Бамбл кофе</p><p class="item-price">690 ₽</p></div>
-    <div class="item"><p class="item-name">Эспрессо тоник</p><p class="item-price">590 ₽</p></div>
+  <section id="coffee" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg><h2>Кофе и чай</h2><span class="sec-count">10</span></div>
+    <div class="grid">
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Американо 0,3</p><p class="card-price">420 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Американо 0,4</p><p class="card-price">450 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Капучино 0,3</p><p class="card-price">420 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Капучино 0,4</p><p class="card-price">450 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Латте 0,3</p><p class="card-price">550 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Латте 0,4</p><p class="card-price">620 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Эспрессо</p><p class="card-price">390 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Чай в ассортименте 0,4</p><p class="card-price">400 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Бамбл кофе</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M16 10h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><path d="M8 2c0 1-1.2 1-1.2 2S8 5 8 6"/><path d="M12 2c0 1-1.2 1-1.2 2S12 5 12 6"/></svg></div><div class="card-body"><p class="card-name">Эспрессо тоник</p><p class="card-price">590 ₽</p></div></div>
+    </div>
   </section>
 
-  <section id="juice">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg><h2>Соки и лимонады</h2></div>
-    <div class="item"><p class="item-name">Апельсиновый фреш 0,3</p><p class="item-price">590 ₽</p></div>
-    <div class="item"><p class="item-name">Апельсиновый фреш 0,4</p><p class="item-price">690 ₽</p></div>
-    <div class="item"><p class="item-name">Pulpy в ассортименте 0,45</p><p class="item-price">420 ₽</p></div>
-    <div class="item"><p class="item-name">Сок в ассортименте 0,3</p><p class="item-price">390 ₽</p></div>
-    <div class="item"><p class="item-name">Сок в ассортименте 0,2</p><p class="item-price">390 ₽</p></div>
-    <div class="item"><p class="item-name">Лимонад «Боржоми» в ассортименте 0,3</p><p class="item-price">550 ₽</p></div>
+  <section id="juice" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg><h2>Соки и лимонады</h2><span class="sec-count">6</span></div>
+    <div class="grid">
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg></div><div class="card-body"><p class="card-name">Апельсиновый фреш 0,3</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg></div><div class="card-body"><p class="card-name">Апельсиновый фреш 0,4</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg></div><div class="card-body"><p class="card-name">Pulpy в ассортименте 0,45</p><p class="card-price">420 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg></div><div class="card-body"><p class="card-name">Сок в ассортименте 0,3</p><p class="card-price">390 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg></div><div class="card-body"><p class="card-name">Сок в ассортименте 0,2</p><p class="card-price">390 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 4h9l-1 15a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2L7 4z"/><path d="M7.5 9h8"/><path d="M15 1l2 4"/></svg></div><div class="card-body"><p class="card-name">Лимонад «Боржоми» в ассортименте 0,3</p><p class="card-price">550 ₽</p></div></div>
+    </div>
   </section>
 
-  <section id="water">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg><h2>Вода и газировка</h2></div>
-
-    <p class="sub-label">Вода</p>
-    <div class="item"><p class="item-name">Боржоми 0,5</p><p class="item-price">690 ₽</p></div>
-    <div class="item"><p class="item-name">Тассай 0,5</p><p class="item-price">690 ₽</p></div>
-    <div class="item"><p class="item-name">Святой Источник 0,5</p><p class="item-price">290 ₽</p></div>
-
-    <p class="sub-label">Газировка</p>
-    <div class="item"><p class="item-name">Кока-Кола 0,5</p><p class="item-price">590 ₽</p></div>
-    <div class="item"><p class="item-name">Кока-Кола Zero 0,5</p><p class="item-price">590 ₽</p></div>
-    <div class="item"><p class="item-name">Кока-Кола Zero, стекло, 0,33</p><p class="item-price">690 ₽</p></div>
-    <div class="item"><p class="item-name">Спрайт 0,5</p><p class="item-price">590 ₽</p></div>
-    <div class="item"><p class="item-name">Фанта 0,33</p><p class="item-price">690 ₽</p></div>
-    <div class="item"><p class="item-name">Фанта 0,5</p><p class="item-price">590 ₽</p></div>
-
-    <p class="sub-label">Энергетики и холодный чай</p>
-    <div class="item"><p class="item-name">Adrenaline Rush 0,25</p><p class="item-price">590 ₽</p></div>
-    <div class="item"><p class="item-name">Red Bull в ассортименте 0,25</p><p class="item-price">690 ₽</p></div>
-    <div class="item"><p class="item-name">Red Bull в ассортименте 0,355</p><p class="item-price">990 ₽</p></div>
-    <div class="item"><p class="item-name">Холодный чай в ассортименте 0,5</p><p class="item-price">490 ₽</p></div>
+  <section id="water" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg><h2>Вода и газировка</h2><span class="sec-count">13</span></div>
+    <div class="grid">
+      <p class="sub-label">Вода</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Боржоми 0,5</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Тассай 0,5</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Святой Источник 0,5</p><p class="card-price">290 ₽</p></div></div>
+      <p class="sub-label">Газировка</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Кока-Кола 0,5</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Кока-Кола Zero 0,5</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Кока-Кола Zero, стекло, 0,33</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Спрайт 0,5</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Фанта 0,33</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Фанта 0,5</p><p class="card-price">590 ₽</p></div></div>
+      <p class="sub-label">Энергетики и холодный чай</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Adrenaline Rush 0,25</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Red Bull в ассортименте 0,25</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Red Bull в ассортименте 0,355</p><p class="card-price">990 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2s6 7 6 11.5A6 6 0 0 1 6 13.5C6 9 12 2 12 2z"/></svg></div><div class="card-body"><p class="card-name">Холодный чай в ассортименте 0,5</p><p class="card-price">490 ₽</p></div></div>
+    </div>
   </section>
 
-  <div class="divider"><svg class="divider-icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></div>
-
-  <section id="breakfast">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><circle cx="12" cy="14" r="5"/><path d="M3 14h2M19 14h2M12 3v2M5.6 7.6l1.4 1.4M18.4 7.6l-1.4 1.4"/></svg><h2>Завтраки</h2></div>
-    <div class="item"><p class="item-name">Сырники со сметаной, 2 шт</p><p class="item-price">650 ₽</p></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/e8e034b592.jpg" alt="Круассан классический" loading="lazy"><div class="item"><p class="item-name">Круассан классический</p><p class="item-price">450 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/538fd896d0.jpg" alt="Круассан с ветчиной и сыром" loading="lazy"><div class="item"><p class="item-name">Круассан с ветчиной и сыром</p><p class="item-price">600 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/6630f7bc4c.jpg" alt="Круассан с лососем" loading="lazy"><div class="item"><p class="item-name">Круассан с лососем</p><p class="item-price">750 ₽</p></div></div>
+  <section id="breakfast" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><circle cx="12" cy="14" r="5"/><path d="M3 14h2M19 14h2M12 3v2M5.6 7.6l1.4 1.4M18.4 7.6l-1.4 1.4"/></svg><h2>Завтраки</h2><span class="sec-count">4</span></div>
+    <div class="grid">
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><circle cx="12" cy="14" r="5"/><path d="M3 14h2M19 14h2M12 3v2M5.6 7.6l1.4 1.4M18.4 7.6l-1.4 1.4"/></svg></div><div class="card-body"><p class="card-name">Сырники со сметаной, 2 шт</p><p class="card-price">650 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/e8e034b592.jpg" alt="Круассан классический" loading="lazy"></div><div class="card-body"><p class="card-name">Круассан классический</p><p class="card-price">450 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/538fd896d0.jpg" alt="Круассан с ветчиной и сыром" loading="lazy"></div><div class="card-body"><p class="card-name">Круассан с ветчиной и сыром</p><p class="card-price">600 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/6630f7bc4c.jpg" alt="Круассан с лососем" loading="lazy"></div><div class="card-body"><p class="card-name">Круассан с лососем</p><p class="card-price">750 ₽</p></div></div>
+    </div>
   </section>
 
-  <section id="grill">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg><h2>Гриль и фастфуд</h2></div>
-
-    <p class="sub-label">Шаурма</p>
-    <div class="item"><p class="item-name">Шаурма куриная</p><p class="item-price">990 ₽</p></div>
-    <div class="item"><p class="item-name">Шаурма в шоти</p><p class="item-price">1 290 ₽</p></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/c29608ebcc.jpg" alt="Сосиска в тесте" loading="lazy"><div class="item"><p class="item-name">Сосиска в тесте</p><p class="item-price">490 ₽</p></div></div>
-
-    <p class="sub-label">Хот-доги</p>
-    <div class="item"><p class="item-name">Хот-дог датский, говяжья колбаска</p><p class="item-price">1 100 ₽</p></div>
-    <div class="item"><p class="item-name">Хот-дог датский, куриная колбаска</p><p class="item-price">1 100 ₽</p></div>
-    <div class="item"><p class="item-name">Хот-дог французский, говяжья сосиска</p><p class="item-price">1 100 ₽</p></div>
-    <div class="item"><p class="item-name">Хот-дог французский, куриная сосиска</p><p class="item-price">1 100 ₽</p></div>
-
-    <p class="sub-label">Сэндвичи</p>
-    <div class="item"><p class="item-name">Бутерброд с авокадо и гуакамоле</p><p class="item-price">790 ₽</p></div>
-    <div class="item"><p class="item-name">Бутерброд с креветками</p><p class="item-price">790 ₽</p></div>
-    <div class="item"><p class="item-name">Бутерброд с форелью</p><p class="item-price">790 ₽</p></div>
-    <div class="item"><p class="item-name">Клаб-сэндвич с курицей и беконом</p><p class="item-price">790 ₽</p></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/5c0282bfa4.jpg" alt="Сэндвич ветчина и сыр" loading="lazy"><div class="item"><p class="item-name">Сэндвич ветчина и сыр</p><p class="item-price">600 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/7adbf148c8.jpg" alt="Сэндвич курица" loading="lazy"><div class="item"><p class="item-name">Сэндвич курица</p><p class="item-price">620 ₽</p></div></div>
-    <div class="item"><p class="item-name">Сэндвич с мортаделлой и песто</p><p class="item-price">790 ₽</p></div>
-    <div class="item"><p class="item-name">Сэндвич с прошутто и чоризо</p><p class="item-price">790 ₽</p></div>
-    <div class="item"><p class="item-name">Сэндвич с тунцом и яйцом</p><p class="item-price">790 ₽</p></div>
+  <section id="grill" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg><h2>Гриль и фастфуд</h2><span class="sec-count">16</span></div>
+    <div class="grid">
+      <p class="sub-label">Шаурма</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Шаурма куриная</p><p class="card-price">990 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Шаурма в шоти</p><p class="card-price">1 290 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/c29608ebcc.jpg" alt="Сосиска в тесте" loading="lazy"></div><div class="card-body"><p class="card-name">Сосиска в тесте</p><p class="card-price">490 ₽</p></div></div>
+      <p class="sub-label">Хот-доги</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Хот-дог датский, говяжья колбаска</p><p class="card-price">1 100 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Хот-дог датский, куриная колбаска</p><p class="card-price">1 100 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Хот-дог французский, говяжья сосиска</p><p class="card-price">1 100 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Хот-дог французский, куриная сосиска</p><p class="card-price">1 100 ₽</p></div></div>
+      <p class="sub-label">Сэндвичи</p>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Бутерброд с авокадо и гуакамоле</p><p class="card-price">790 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Бутерброд с креветками</p><p class="card-price">790 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Бутерброд с форелью</p><p class="card-price">790 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Клаб-сэндвич с курицей и беконом</p><p class="card-price">790 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/5c0282bfa4.jpg" alt="Сэндвич ветчина и сыр" loading="lazy"></div><div class="card-body"><p class="card-name">Сэндвич ветчина и сыр</p><p class="card-price">600 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/7adbf148c8.jpg" alt="Сэндвич курица" loading="lazy"></div><div class="card-body"><p class="card-name">Сэндвич курица</p><p class="card-price">620 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Сэндвич с мортаделлой и песто</p><p class="card-price">790 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Сэндвич с прошутто и чоризо</p><p class="card-price">790 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c0-1-.5-2-.5-2C18 9 19 12 19 14a7 7 0 1 1-14 0c0-4 3-6 4-9 0 2 1 2 1 2s0-3 2-5z"/></svg></div><div class="card-body"><p class="card-name">Сэндвич с тунцом и яйцом</p><p class="card-price">790 ₽</p></div></div>
+    </div>
   </section>
 
-  <div class="divider"><svg class="divider-icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></div>
-
-  <section id="bowls">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M3 12h18a9 9 0 0 1-9 9h0a9 9 0 0 1-9-9z"/><path d="M16 3l3 9M19 3l2 9"/></svg><h2>Роллы, салаты и поке</h2></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/b8f0e8b97c.jpg" alt="Ролл с курицей" loading="lazy"><div class="item"><p class="item-name">Ролл с курицей</p><p class="item-price">590 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/20ac48b66d.jpg" alt="Ролл с лососем" loading="lazy"><div class="item"><p class="item-name">Ролл с лососем</p><p class="item-price">890 ₽</p></div></div>
-    <div class="item"><p class="item-name">Салат «Цезарь»</p><p class="item-price">790 ₽</p></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/a015bececc.jpg" alt="Поке с курицей" loading="lazy"><div class="item"><p class="item-name">Поке с курицей</p><p class="item-price">990 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/79a2419090.jpg" alt="Поке с лососем" loading="lazy"><div class="item"><p class="item-name">Поке с лососем</p><p class="item-price">1 150 ₽</p></div></div>
+  <section id="bowls" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M3 12h18a9 9 0 0 1-9 9h0a9 9 0 0 1-9-9z"/><path d="M16 3l3 9M19 3l2 9"/></svg><h2>Роллы, салаты и поке</h2><span class="sec-count">5</span></div>
+    <div class="grid">
+      <div class="card"><div class="card-media"><img src="photos/b8f0e8b97c.jpg" alt="Ролл с курицей" loading="lazy"></div><div class="card-body"><p class="card-name">Ролл с курицей</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/20ac48b66d.jpg" alt="Ролл с лососем" loading="lazy"></div><div class="card-body"><p class="card-name">Ролл с лососем</p><p class="card-price">890 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M3 12h18a9 9 0 0 1-9 9h0a9 9 0 0 1-9-9z"/><path d="M16 3l3 9M19 3l2 9"/></svg></div><div class="card-body"><p class="card-name">Салат «Цезарь»</p><p class="card-price">790 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/a015bececc.jpg" alt="Поке с курицей" loading="lazy"></div><div class="card-body"><p class="card-name">Поке с курицей</p><p class="card-price">990 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/79a2419090.jpg" alt="Поке с лососем" loading="lazy"></div><div class="card-body"><p class="card-name">Поке с лососем</p><p class="card-price">1 150 ₽</p></div></div>
+    </div>
   </section>
 
-  <section id="soups">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M3 11h18c0 4-3 8-7 8h-4c-4 0-7-4-7-8z"/><path d="M9 3c0 1-1.2 1-1.2 2S9 6 9 7M13 3c0 1-1.2 1-1.2 2S13 6 13 7"/></svg><h2>Супы</h2></div>
-
-    <div class="item-featured"><img class="hero-photo" src="photos/c0f704346a.jpg" alt="Борщ со сметаной" loading="lazy"><div class="item"><p class="item-name">Борщ со сметаной</p><p class="item-price">590 ₽</p></div></div>
-
-    <div class="item-featured"><img class="hero-photo" src="photos/a8272be98d.jpg" alt="Лапша куриная" loading="lazy"><div class="item"><p class="item-name">Лапша куриная</p><p class="item-price">490 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/543d395575.jpg" alt="Солянка мясная" loading="lazy"><div class="item"><p class="item-name">Солянка мясная</p><p class="item-price">590 ₽</p></div></div>
+  <section id="soups" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M3 11h18c0 4-3 8-7 8h-4c-4 0-7-4-7-8z"/><path d="M9 3c0 1-1.2 1-1.2 2S9 6 9 7M13 3c0 1-1.2 1-1.2 2S13 6 13 7"/></svg><h2>Супы</h2><span class="sec-count">3</span></div>
+    <div class="grid">
+      <div class="card"><div class="card-media"><img src="photos/c0f704346a.jpg" alt="Борщ со сметаной" loading="lazy"></div><div class="card-body"><p class="card-name">Борщ со сметаной</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/a8272be98d.jpg" alt="Лапша куриная" loading="lazy"></div><div class="card-body"><p class="card-name">Лапша куриная</p><p class="card-price">490 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/543d395575.jpg" alt="Солянка мясная" loading="lazy"></div><div class="card-body"><p class="card-name">Солянка мясная</p><p class="card-price">590 ₽</p></div></div>
+    </div>
   </section>
 
-  <div class="divider"><svg class="divider-icon" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></div>
-
-  <section id="desserts">
-    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M4 20 12 6l8 14z"/><path d="M9.5 4.5 12 3l2.5 1.5"/><path d="M12 20v-6"/></svg><h2>Десерты и выпечка</h2></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/774da35f2c.jpg" alt="Торт медовик" loading="lazy"><div class="item"><p class="item-name">Торт медовик</p><p class="item-price">590 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/8994922413.jpg" alt="Торт «Прага» шоколадный" loading="lazy"><div class="item"><p class="item-name">Торт «Прага» шоколадный</p><p class="item-price">590 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/2700c005f2.jpg" alt="Торт груша-рикотта" loading="lazy"><div class="item"><p class="item-name">Торт груша-рикотта</p><p class="item-price">590 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/2d34f34eeb.jpg" alt="Торт карамельно-яблочный" loading="lazy"><div class="item"><p class="item-name">Торт карамельно-яблочный</p><p class="item-price">590 ₽</p></div></div>
-    <div class="item"><p class="item-name">Франбини</p><p class="item-price">2 100 ₽</p></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/5f02bcb0ae.jpg" alt="Чизкейк манго-маракуйя" loading="lazy"><div class="item"><p class="item-name">Чизкейк манго-маракуйя</p><p class="item-price">690 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/2f5252f6e4.jpg" alt="Чизкейк Нью-Йорк" loading="lazy"><div class="item"><p class="item-name">Чизкейк Нью-Йорк</p><p class="item-price">690 ₽</p></div></div>
-    <div class="item"><p class="item-name">Чизкейк с брауни и карамелью</p><p class="item-price">690 ₽</p></div>
-    <div class="item"><p class="item-name">Чизкейк черничный</p><p class="item-price">690 ₽</p></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/7f790db59a.jpg" alt="Круассан миндальный" loading="lazy"><div class="item"><p class="item-name">Круассан миндальный</p><p class="item-price">650 ₽</p></div></div>
-    <div class="item"><p class="item-name">Блинчики классические, 2 шт</p><p class="item-price">350 ₽</p></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/8dd3291617.jpg" alt="Венская вафля со сгущённым молоком" loading="lazy"><div class="item"><p class="item-name">Венская вафля со сгущённым молоком</p><p class="item-price">490 ₽</p></div></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/aa27663a0b.jpg" alt="Пирожок с мясом" loading="lazy"><div class="item"><p class="item-name">Пирожок с мясом</p><p class="item-price">250 ₽</p></div></div>
-    <div class="item"><p class="item-name">Пирожок с яблочной начинкой</p><p class="item-price">250 ₽</p></div>
-    <div class="item-featured"><img class="hero-photo" src="photos/34258fc078.jpg" alt="Самса с говядиной" loading="lazy"><div class="item"><p class="item-name">Самса с говядиной</p><p class="item-price">420 ₽</p></div></div>
+  <section id="desserts" hidden>
+    <div class="sec-head"><svg class="sec-icon" viewBox="0 0 24 24"><path d="M7 11h10l-1.3 8.1a2 2 0 0 1-2 1.9h-3.4a2 2 0 0 1-2-1.9L7 11z"/><path d="M5.5 11a6.5 4 0 0 1 13 0z"/><path d="M12 3.2v2.3"/><circle cx="12" cy="2.3" r="1" fill="var(--gold)" stroke="none"/></svg><h2>Десерты и выпечка</h2><span class="sec-count">15</span></div>
+    <div class="grid">
+      <div class="card"><div class="card-media"><img src="photos/774da35f2c.jpg" alt="Торт медовик" loading="lazy"></div><div class="card-body"><p class="card-name">Торт медовик</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/8994922413.jpg" alt="Торт «Прага» шоколадный" loading="lazy"></div><div class="card-body"><p class="card-name">Торт «Прага» шоколадный</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/2700c005f2.jpg" alt="Торт груша-рикотта" loading="lazy"></div><div class="card-body"><p class="card-name">Торт груша-рикотта</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/2d34f34eeb.jpg" alt="Торт карамельно-яблочный" loading="lazy"></div><div class="card-body"><p class="card-name">Торт карамельно-яблочный</p><p class="card-price">590 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 11h10l-1.3 8.1a2 2 0 0 1-2 1.9h-3.4a2 2 0 0 1-2-1.9L7 11z"/><path d="M5.5 11a6.5 4 0 0 1 13 0z"/><path d="M12 3.2v2.3"/><circle cx="12" cy="2.3" r="1" fill="var(--gold)" stroke="none"/></svg></div><div class="card-body"><p class="card-name">Франбини</p><p class="card-price">2 100 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/5f02bcb0ae.jpg" alt="Чизкейк манго-маракуйя" loading="lazy"></div><div class="card-body"><p class="card-name">Чизкейк манго-маракуйя</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/2f5252f6e4.jpg" alt="Чизкейк Нью-Йорк" loading="lazy"></div><div class="card-body"><p class="card-name">Чизкейк Нью-Йорк</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 11h10l-1.3 8.1a2 2 0 0 1-2 1.9h-3.4a2 2 0 0 1-2-1.9L7 11z"/><path d="M5.5 11a6.5 4 0 0 1 13 0z"/><path d="M12 3.2v2.3"/><circle cx="12" cy="2.3" r="1" fill="var(--gold)" stroke="none"/></svg></div><div class="card-body"><p class="card-name">Чизкейк с брауни и карамелью</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 11h10l-1.3 8.1a2 2 0 0 1-2 1.9h-3.4a2 2 0 0 1-2-1.9L7 11z"/><path d="M5.5 11a6.5 4 0 0 1 13 0z"/><path d="M12 3.2v2.3"/><circle cx="12" cy="2.3" r="1" fill="var(--gold)" stroke="none"/></svg></div><div class="card-body"><p class="card-name">Чизкейк черничный</p><p class="card-price">690 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/7f790db59a.jpg" alt="Круассан миндальный" loading="lazy"></div><div class="card-body"><p class="card-name">Круассан миндальный</p><p class="card-price">650 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 11h10l-1.3 8.1a2 2 0 0 1-2 1.9h-3.4a2 2 0 0 1-2-1.9L7 11z"/><path d="M5.5 11a6.5 4 0 0 1 13 0z"/><path d="M12 3.2v2.3"/><circle cx="12" cy="2.3" r="1" fill="var(--gold)" stroke="none"/></svg></div><div class="card-body"><p class="card-name">Блинчики классические, 2 шт</p><p class="card-price">350 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/8dd3291617.jpg" alt="Венская вафля со сгущённым молоком" loading="lazy"></div><div class="card-body"><p class="card-name">Венская вафля со сгущённым молоком</p><p class="card-price">490 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/aa27663a0b.jpg" alt="Пирожок с мясом" loading="lazy"></div><div class="card-body"><p class="card-name">Пирожок с мясом</p><p class="card-price">250 ₽</p></div></div>
+      <div class="card"><div class="card-media placeholder"><svg viewBox="0 0 24 24"><path d="M7 11h10l-1.3 8.1a2 2 0 0 1-2 1.9h-3.4a2 2 0 0 1-2-1.9L7 11z"/><path d="M5.5 11a6.5 4 0 0 1 13 0z"/><path d="M12 3.2v2.3"/><circle cx="12" cy="2.3" r="1" fill="var(--gold)" stroke="none"/></svg></div><div class="card-body"><p class="card-name">Пирожок с яблочной начинкой</p><p class="card-price">250 ₽</p></div></div>
+      <div class="card"><div class="card-media"><img src="photos/34258fc078.jpg" alt="Самса с говядиной" loading="lazy"></div><div class="card-body"><p class="card-name">Самса с говядиной</p><p class="card-price">420 ₽</p></div></div>
+    </div>
   </section>
 
   <footer>
@@ -563,50 +590,29 @@
   </footer>
 </div>
 
-<nav id="nav">
-  <a href="#cocktails">Коктейли</a>
-  <a href="#spirits">Крепкое</a>
-  <a href="#wine">Вино</a>
-  <a href="#beer">Пиво</a>
-  <a href="#coffee">Кофе</a>
-  <a href="#juice">Соки</a>
-  <a href="#water">Вода</a>
-  <a href="#breakfast">Завтраки</a>
-  <a href="#grill">Гриль</a>
-  <a href="#bowls">Роллы</a>
-  <a href="#soups">Супы</a>
-  <a href="#desserts">Десерты</a>
-</nav>
-
 <script>
-  const links = Array.from(document.querySelectorAll('nav a'));
-  const sections = links.map(a => document.querySelector(a.getAttribute('href')));
-  function setActive(){
-    let idx = 0;
-    const y = window.scrollY + 120;
-    sections.forEach((s, i) => { if (s && s.offsetTop <= y) idx = i; });
-    links.forEach((a, i) => a.classList.toggle('active', i === idx));
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const sections = tabs.map(t => document.getElementById(t.dataset.target));
+
+  function showSection(id, scroll){
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.target === id));
+    sections.forEach(s => { if (s) s.hidden = (s.id !== id); });
+    if (scroll) {
+      const tabsWrap = document.querySelector('.tabs-wrap');
+      const y = tabsWrap.getBoundingClientRect().bottom + window.scrollY - 70;
+      window.scrollTo({ top: Math.max(y, 0), behavior: 'smooth' });
+    }
   }
-  document.addEventListener('scroll', setActive, { passive:true });
-  setActive();
-  links.forEach(a => a.addEventListener('click', () => {
-    setTimeout(() => {
-      const active = document.querySelector('nav a.active');
-      if (active) active.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
-    }, 400);
+
+  tabs.forEach(t => t.addEventListener('click', () => {
+    const id = t.dataset.target;
+    history.replaceState(null, '', '#' + id);
+    showSection(id, true);
+    t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
   }));
 
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
-    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
-    sections.forEach(s => s && io.observe(s));
-  }
-
-  document.querySelectorAll('section').forEach(sec => {
-    const items = Array.from(sec.children).filter(el => el.classList.contains('item'));
-    items.forEach((el, i) => { if (i % 2 === 1) el.classList.add('zebra'); });
-  });
+  const initial = (location.hash || '').replace('#', '');
+  showSection(sections.some(s => s && s.id === initial) ? initial : sections[0].id, false);
 </script>
 </body>
 </html>
